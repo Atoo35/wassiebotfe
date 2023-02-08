@@ -6,10 +6,7 @@ import EPSButton from '../components/EPSButton'
 import { useState, useEffect } from "react";
 import { useContractRead, useAccount } from "wagmi";
 import EPSAPI from '../contract/abi.json'
-import firebase from 'firebase/app';
-import 'firebase/database';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+
 
 const Home: NextPage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -32,23 +29,13 @@ const { data, isError, isLoading, error } = useContractRead({
 });
 
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAQbJVXAZIs_8f40C0Y0QU9F_GtvL3Oquc",
-//   authDomain: "wassiebot.firebaseapp.com",
-//   projectId: "wassiebot",
-//   storageBucket: "wassiebot.appspot.com",
-//   messagingSenderId: "1046948059755",
-//   appId: "1:1046948059755:web:3e63074d12a49e53706f2e",
-//   measurementId: "G-VL1YQRWC2X"
-// };
+
 
 
 //send data to db
 useEffect(() => {
   if (address) {
     setHotWallet(address as any);
-//     const app = firebase.initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 
    
   }
