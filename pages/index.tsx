@@ -52,10 +52,10 @@ useEffect(() => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main className={styles.main} suppressHydrationWarning >
         <ConnectButton />
 HOT WALLET: {addy} <br></br>
-{data && data.cold && <p>EPS Connected COLD WALLET: {data.cold}</p>}
+{data && (data as any).cold && <p>EPS Connected COLD WALLET: {(data as any).cold}</p>}
        
 
         <h1 className={styles.title}>
