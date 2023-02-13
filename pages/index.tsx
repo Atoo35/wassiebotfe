@@ -77,7 +77,7 @@ HOT WALLET: {addy} <br></br>
        
 
         <h1 className={styles.title}>
-          Welcome to <a href="">Wassie</a><a href="">BATTLES</a> +{' '}
+          Welcome to <a href="">Wassie</a><a href="">BATTLES 🌸🌸🌸</a> +{' '}
          
         </h1>
 
