@@ -15,14 +15,14 @@ const Home: NextPage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
   const [addy, setHotWallet] = useState<any[]>([]);
   const router = useRouter();
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<any[]>([]);
   const [decoded, setDecoded] = useState(null);
   const [errosr, setErrosr] = useState<any[]>([]);
 
 //get values from URL
 useEffect(() => {
-  const token = router.query.token;
-  setToken(token as any) ;
+  const token: any = router.query.token;
+  setToken(token) ;
 
   if (token) {
     try {
@@ -34,6 +34,8 @@ useEffect(() => {
   } else {
     setErrosr("No token found in URL." as any);
   }
+
+  console.log("DECODED TOKEN🌸🌸🌸", decoded)
 }, [router.query]);
 
 // set the users hot wallet using RAINBOW
