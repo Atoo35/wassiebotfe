@@ -12,6 +12,24 @@ const Home: NextPage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
   const [addy, setHotWallet] = useState<any[]>([]);
 
+  const jwt = require("jsonwebtoken");
+
+const queryString = window.location.search;
+const params = new URLSearchParams(queryString);
+const token = params.get("token");
+
+if (token) {
+  try {
+    const decoded = jwt.verify(token, "secret");
+    console.log("Decoded payload:", decoded);
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+} else {
+  console.error("No token found in URL.");
+}
+
+
 // set the users hot wallet using RAINBOW
   useEffect(() => {
     if (address) {
