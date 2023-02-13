@@ -7,28 +7,34 @@ import { useState, useEffect } from "react";
 import { useContractRead, useAccount } from "wagmi";
 import EPSAPI from '../contract/abi.json'
 
+import { useRouter } from "next/router";
+
 
 const Home: NextPage = () => {
+  const jwt = require("jsonwebtoken");
   const { address, isConnecting, isDisconnected } = useAccount();
   const [addy, setHotWallet] = useState<any[]>([]);
+  const router = useRouter();
+  const [token, setToken] = useState(null);
+  const [decoded, setDecoded] = useState(null);
+  const [errosr, setErrosr] = useState<any[]>([]);
 
-  const jwt = require("jsonwebtoken");
+//get values from URL
+useEffect(() => {
+  const token = router.query.token;
+  setToken(token as any) ;
 
-const queryString = window.location.search;
-const params = new URLSearchParams(queryString);
-const token = params.get("token");
-
-if (token) {
-  try {
-    const decoded = jwt.verify(token, "secret");
-    console.log("Decoded payload:", decoded);
-  } catch (error) {
-    console.error("Error decoding JWT:", error);
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, "secret");
+      setDecoded(decoded);
+    } catch (error) {
+      setErrosr(error as any);
+    }
+  } else {
+    setErrosr("No token found in URL." as any);
   }
-} else {
-  console.error("No token found in URL.");
-}
-
+}, [router.query]);
 
 // set the users hot wallet using RAINBOW
   useEffect(() => {
@@ -80,7 +86,11 @@ HOT WALLET: {addy} <br></br>
           Welcome to <a href="">Wassie</a><a href="">BATTLES 🌸🌸🌸</a> +{' '}
          
         </h1>
-
+        <div>
+      {token && <p>Token: {token}</p>}
+      {decoded && <p>Decoded payload: {JSON.stringify(decoded)}</p>}
+      {error && <p>Error: {error.message}</p>}
+    </div>
        
       </main>
 
