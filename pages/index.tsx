@@ -10,25 +10,14 @@ import { useRouter } from "next/router";
 
 
 const Home: NextPage = () => {
-  const jwt = require("jsonwebtoken");
+
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hotWallet, setHotWallet] = useState<any[]>([]);
-  const [decodedToken, setDecodedToken] = useState(null);
-  const [error, setError] = useState<Error | null>(null);
+
 
   const router = useRouter();
 
-  useEffect(() => {
-    const token = router.query.token as string;
-    if (token) {
-      try {
-        const decoded = jwt.verify(token, "secret");
-        setDecodedToken(decoded);
-      } catch (err) {
-        setError(err as Error);
-      }
-    }
-  }, [router.query]);
+
 
   useEffect(() => {
     if (address) {
@@ -61,10 +50,8 @@ const Home: NextPage = () => {
           <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
         )}
         <h1 className={styles.title}>Welcome to RainbowKit App 🪲🪲🪲🪲</h1>
-        {decodedToken && (
-          <p>Decoded Token: {JSON.stringify(decodedToken)}</p>
-        )}
-        {error && <p>Error: {error.message}</p>}
+     
+       
       </main>
 
       <footer className={styles.footer}>
