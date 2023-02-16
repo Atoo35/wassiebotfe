@@ -61,9 +61,11 @@ const Home: NextPage = () => {
       <main className={styles.main} suppressHydrationWarning>
         <ConnectButton />
         <p>Hot Wallet: {hotWallet}</p>
-        {data !== undefined && data !== null && data.cold && <p>EPS Connected Cold Wallet: {data.cold}</p>}
-        <h1 className={styles.title}>Welcome to RainbowKit App 🪲💖🪲🪲🪲</h1>
-        {decoded && <p>Decoded JWT: {decoded}</p>}
+        {data && (data as any).cold && (
+          <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
+        )}
+        <h1 className={styles.title}>Welcome to RainbowKit App 🪲💀💀🪲🪲🪲</h1>
+    
       </main>
   
       <footer className={styles.footer}>
