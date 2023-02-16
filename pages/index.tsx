@@ -62,7 +62,7 @@ const Home: NextPage = () => {
         <ConnectButton />
         <p>Hot Wallet: {hotWallet}</p>
         {data?.cold && <p>EPS Connected Cold Wallet: {data.cold}</p>}
-        <h1 className={styles.title}>Welcome to RainbowKit App 🪲🪲🪲🪲</h1>
+        <h1 className={styles.title}>Welcome to RainbowKit App 🪲💖🪲🪲🪲</h1>
         {decoded && <p>Decoded JWT: {decoded}</p>}
       </main>
 
