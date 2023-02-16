@@ -57,15 +57,15 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+  
       <main className={styles.main} suppressHydrationWarning>
         <ConnectButton />
         <p>Hot Wallet: {hotWallet}</p>
-        {data?.cold && <p>EPS Connected Cold Wallet: {data.cold}</p>}
+        {data && data.cold && <p>EPS Connected Cold Wallet: {data.cold}</p>}
         <h1 className={styles.title}>Welcome to RainbowKit App 🪲💖🪲🪲🪲</h1>
         {decoded && <p>Decoded JWT: {decoded}</p>}
       </main>
-
+  
       <footer className={styles.footer}>
         <a
           href="https://blossomdao.space"
@@ -77,6 +77,7 @@ const Home: NextPage = () => {
       </footer>
     </div>
   );
+  
 };
 
 export default Home;
