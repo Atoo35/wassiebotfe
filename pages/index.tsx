@@ -7,21 +7,36 @@ import { useState, useEffect } from "react";
 import { useContractRead, useAccount } from "wagmi";
 import EPSAPI from '../contract/abi.json'
 import { useRouter } from "next/router";
-
+import jwt from "jsonwebtoken";
 
 const Home: NextPage = () => {
-
-  const { address, isConnecting, isDisconnected } = useAccount();
-  const [hotWallet, setHotWallet] = useState<any[]>([]);
-
-
+  const [decoded, setDecoded] = useState<string | null>(null);
   const router = useRouter();
+  const token = router.query.token as string;
+  const JWT_KEYe = process.env.NEXT_PUBLIC_JWT_KEY as string;
+  const { address, isConnecting, isDisconnected } = useAccount();
+  const [hotWallet, setHotWallet] = useState<string>("");
 
+  useEffect(() => {
+  
+    async function verifyToken() {
+      try {
+        const decodedToken = await jwt.verify(token, JWT_KEYe);
+        console.log("🦄🦄🦄", decodedToken)
+        setDecoded(decodedToken as string);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
+    if (token) {
+      verifyToken();
+    }
+  }, [token]);
 
   useEffect(() => {
     if (address) {
-      setHotWallet(address as any);
+      setHotWallet(address);
     }
   }, [address]);
 
@@ -43,19 +58,20 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main} suppressHydrationWarning >
+      <main className={styles.main} suppressHydrationWarning>
         <ConnectButton />
         <p>Hot Wallet: {hotWallet}</p>
-        {data && (data as any).cold && (
-          <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
-        )}
+        {data?.cold && <p>EPS Connected Cold Wallet: {data.cold}</p>}
         <h1 className={styles.title}>Welcome to RainbowKit App 🪲🪲🪲🪲</h1>
-     
-       
+        {decoded && <p>Decoded JWT: {decoded}</p>}
       </main>
 
       <footer className={styles.footer}>
-        <a href="https://blossomdao.space" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://blossomdao.space"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Made with ❤️ by your frens at BlossomDAO
         </a>
       </footer>
