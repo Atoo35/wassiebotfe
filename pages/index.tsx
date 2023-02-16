@@ -8,6 +8,9 @@ import { useContractRead, useAccount } from "wagmi";
 import EPSAPI from '../contract/abi.json'
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import User from './UserSchema';
+
 
 const Home: NextPage = () => {
   const [decoded, setDecoded] = useState<string | null>(null);
@@ -17,8 +20,29 @@ const Home: NextPage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hotWallet, setHotWallet] = useState<string>("");
 
-  useEffect(() => {
+  async function addUserToMongoDB(id: string, guild_id: string, address: string, network: string, warrior?: string): Promise<void> {
+    try {
+      await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URI!);
+      const newUser = new User({
+        id,
+        guild_id,
+        address,
+        network,
+        warrior
+      });
+      await newUser.save();
+      console.log("User added to the database");
+    } catch (error) {
+      console.error("Error adding user to database", error);
+    } finally {
+      await mongoose.connection.close();
+    }
+  }
   
+
+  useEffect(() => {
+    addUserToMongoDB("1234", "guild123", "0x1234", "mainnet", "Bob");
+
     async function verifyToken() {
       try {
         const decodedToken = await jwt.verify(token, JWT_KEYe);
