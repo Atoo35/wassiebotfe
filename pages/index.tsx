@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 import { createUser } from "../lib/mongo/users";
 
 const Home: NextPage = () => {
+ 
   const [decoded, setDecoded] = useState<string | null>(null);
   const router = useRouter();
   const token = router.query.token as string;
@@ -67,8 +68,9 @@ const Home: NextPage = () => {
 
           
         }),
+        
       });
-      console.log(response);
+      console.log("🌸🌸🌸",(decoded as any).id);
     } catch (error) {
       console.error(error);
     }

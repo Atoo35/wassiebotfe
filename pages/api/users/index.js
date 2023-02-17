@@ -16,7 +16,9 @@ const handler = async (req, res) => {
   else if (req.method === 'POST') {
     try {
       const { _id, guild_id, address, network, wins, losses, played_today } = req.body;
-      const { user, error } = await createUser({ _id, guild_id, address, network, wins, losses, played_today });
+      console.log("📜📜📜📜📜📜📜📜📜📜📜",  _id, guild_id, address, network, wins, losses, played_today)
+      const { user, error } = await createUser(_id, guild_id, address, network, wins, losses, played_today);
+    
       if (error) throw new Error(error);
 
       return res.status(201).json({ user });
