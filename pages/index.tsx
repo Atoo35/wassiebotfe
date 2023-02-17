@@ -8,14 +8,13 @@ import { useContractRead, useAccount } from "wagmi";
 import EPSAPI from "../contract/abi.json";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
-import { createUser } from '../lib/mongo/users';
-
+import { createUser } from "../lib/mongo/users";
 
 const Home: NextPage = () => {
   const [decoded, setDecoded] = useState<string | null>(null);
   const router = useRouter();
   const token = router.query.token as string;
-  const JWT_KEYe = process.env.NEXT_PUBLIC_JWT_KEY as string;
+  const JWT_KEY = process.env.NEXT_PUBLIC_JWT_KEY as string;
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hotWallet, setHotWallet] = useState<string>("");
   const [postsState, setPostsState] = useState([]);
@@ -23,11 +22,10 @@ const Home: NextPage = () => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
- 
   useEffect(() => {
     async function verifyToken() {
       try {
-        const decodedToken = await jwt.verify(token, JWT_KEYe);
+        const decodedToken = await jwt.verify(token, JWT_KEY);
         console.log("🦄🦄🦄", decodedToken);
         setDecoded(decodedToken as string);
       } catch (error) {
@@ -53,6 +51,21 @@ const Home: NextPage = () => {
     args: [address],
   });
 
+  const handleCreateUser = async () => {
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        body: JSON.stringify({
+          name: "John Doe",
+          email: "johndoe@example.com",
+        }),
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -73,8 +86,8 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Welcome to RainbowKit App 🪲💀💀🪲🪲🪲</h1>
       </main>
       <div>
- 
-  </div>
+        <button onClick={handleCreateUser}>Create User</button>
+      </div>
       <footer className={styles.footer}>
         <a
           href="https://blossomdao.space"
