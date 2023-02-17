@@ -56,8 +56,16 @@ const Home: NextPage = () => {
       const response = await fetch("/api/users", {
         method: "POST",
         body: JSON.stringify({
-          name: "John Doe",
-          email: "johndoe@example.com",
+          _id:(decoded as any).id,
+          guild_id:(decoded as any).guildId,
+          address:address,
+          network:"Mumbai",
+          wins:0,
+          losses:0,
+          played_today:0,
+         
+
+          
         }),
       });
       console.log(response);
