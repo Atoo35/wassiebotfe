@@ -111,7 +111,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main} suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  <ConnectButton style={{ marginBottom: 70 }} />
+  <ConnectButton />
         
   {data && (data as any).cold && confirmed !== true && (
     
