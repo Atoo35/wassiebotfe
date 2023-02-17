@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
 import { createUser } from "../lib/mongo/users";
 
+
 const Home: NextPage = () => {
  
   const [decoded, setDecoded] = useState<string | null>(null);
@@ -109,39 +110,48 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main} suppressHydrationWarning>
-        <ConnectButton />
+      <main className={styles.main} suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <ConnectButton style={{ marginBottom: 70 }} />
         
-        {data && (data as any).cold && confirmed !== true &&(
-          <div><p>Hot Wallet: {hotWallet}</p>
-          <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
-          
-           <div>
-            <label>
-             
-              If you dont use EPS and your wassie is NOT on the EPS wallet. Check the box ➡️
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={handleCheckboxChange}
-              />
-            </label>
-            <div>
-        <button onClick={handleCreateUser}>CONFIRM</button>
-      </div>
-          </div>
-          </div>
-          
-        )}    
+  {data && (data as any).cold && confirmed !== true && (
+    
+    <div style={{ border: '1px solid #ddd', padding: 16, marginBottom: 32 }}>
+   <p style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
+  Hot Wallet: 
+</p>{hotWallet}
+<p style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
+  EPS Connected Cold Wallet: 
+</p>{(data as any).cold}
 
-{confirmed === true &&(
-          <div><p>Thank you!</p>
-         
-          </div>
           
-        )}  
-      
-      </main>
+      <div style={{ marginTop: 16 }}>
+        <label style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={handleCheckboxChange}
+            style={{ marginRight: 8 }}
+          />
+          <span style={{ fontSize: 14 }}>
+            If you don't use EPS and your wassie is NOT on the EPS wallet. Check the box 
+          </span>
+        </label>
+        <div style={{ marginTop: 16 }}>
+          <button onClick={handleCreateUser} style={{ padding: 8, borderRadius: 8, backgroundColor: '#0070f3', color: '#fff', border: 'none' }}>
+            CONFIRM
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {confirmed === true && (
+    <div style={{ marginBottom: 32 }}>
+      <p style={{ fontSize: 24, fontWeight: 'bold' }}>Thank you!</p>
+    </div>
+  )}
+</main>
+
   
      
       <footer className={styles.footer}>
