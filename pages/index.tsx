@@ -1,15 +1,14 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import EPSButton from '../components/EPSButton'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import type { NextPage } from "next";
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import EPSButton from "../components/EPSButton";
 import { useState, useEffect } from "react";
 import { useContractRead, useAccount } from "wagmi";
-import EPSAPI from '../contract/abi.json'
+import EPSAPI from "../contract/abi.json";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
-import mongoose from 'mongoose';
-import User from './UserSchema';
+import { createUser } from '../lib/mongo/users';
 
 
 const Home: NextPage = () => {
@@ -19,34 +18,17 @@ const Home: NextPage = () => {
   const JWT_KEYe = process.env.NEXT_PUBLIC_JWT_KEY as string;
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hotWallet, setHotWallet] = useState<string>("");
+  const [postsState, setPostsState] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function addUserToMongoDB(id: string, guild_id: string, address: string, network: string, warrior?: string): Promise<void> {
-    try {
-      await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URI!);
-      const newUser = new User({
-        id,
-        guild_id,
-        address,
-        network,
-        warrior
-      });
-      await newUser.save();
-      console.log("User added to the database");
-    } catch (error) {
-      console.error("Error adding user to database", error);
-    } finally {
-      await mongoose.connection.close();
-    }
-  }
-  
-
+ 
   useEffect(() => {
-    addUserToMongoDB("1234", "guild123", "0x1234", "mainnet", "Bob");
-
     async function verifyToken() {
       try {
         const decodedToken = await jwt.verify(token, JWT_KEYe);
-        console.log("🦄🦄🦄", decodedToken)
+        console.log("🦄🦄🦄", decodedToken);
         setDecoded(decodedToken as string);
       } catch (error) {
         console.error(error);
@@ -81,7 +63,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-  
+
       <main className={styles.main} suppressHydrationWarning>
         <ConnectButton />
         <p>Hot Wallet: {hotWallet}</p>
@@ -89,9 +71,10 @@ const Home: NextPage = () => {
           <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
         )}
         <h1 className={styles.title}>Welcome to RainbowKit App 🪲💀💀🪲🪲🪲</h1>
-    
       </main>
-  
+      <div>
+ 
+  </div>
       <footer className={styles.footer}>
         <a
           href="https://blossomdao.space"
@@ -103,7 +86,6 @@ const Home: NextPage = () => {
       </footer>
     </div>
   );
-  
 };
 
 export default Home;
