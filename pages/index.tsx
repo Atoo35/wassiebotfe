@@ -18,10 +18,15 @@ const Home: NextPage = () => {
   const JWT_KEY = process.env.NEXT_PUBLIC_JWT_KEY as string;
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hotWallet, setHotWallet] = useState<string>("");
-  const [postsState, setPostsState] = useState([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [recordedWallet, setrecordedWallet] = useState<string>("");
+  const [checked, setChecked] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
 
   useEffect(() => {
     async function verifyToken() {
@@ -39,6 +44,9 @@ const Home: NextPage = () => {
     }
   }, [token]);
 
+
+ 
+
   useEffect(() => {
     if (address) {
       setHotWallet(address);
@@ -52,14 +60,28 @@ const Home: NextPage = () => {
     args: [address],
   });
 
+
+  function recordUserWallet(){
+    if(checked ==false){
+      setrecordedWallet(address as string)
+    }else{
+       setrecordedWallet((data as any).cold) 
+    }
+  
+  }
+
   const handleCreateUser = async () => {
+    setConfirmed(true)
+    recordUserWallet();
+    console.log(checked)
+
     try {
       const response = await fetch("/api/users", {
         method: "POST",
         body: JSON.stringify({
           _id:(decoded as any).id,
           guild_id:(decoded as any).guildId,
-          address:address as string,
+          address:recordedWallet as string,
           network:"Mumbai",
           wins:0,
           losses:0,
@@ -89,15 +111,39 @@ const Home: NextPage = () => {
 
       <main className={styles.main} suppressHydrationWarning>
         <ConnectButton />
-        <p>Hot Wallet: {hotWallet}</p>
-        {data && (data as any).cold && (
+        
+        {data && (data as any).cold && confirmed !== true &&(
+          <div><p>Hot Wallet: {hotWallet}</p>
           <p>EPS Connected Cold Wallet: {(data as any).cold}</p>
-        )}
-        <h1 className={styles.title}>Welcome to RainbowKit App 🪲💀💀🪲🪲🪲</h1>
-      </main>
-      <div>
-        <button onClick={handleCreateUser}>Create User</button>
+          
+           <div>
+            <label>
+             
+              If you dont use EPS and your wassie is NOT on the EPS wallet. Check the box ➡️
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={handleCheckboxChange}
+              />
+            </label>
+            <div>
+        <button onClick={handleCreateUser}>CONFIRM</button>
       </div>
+          </div>
+          </div>
+          
+        )}    
+
+{confirmed === true &&(
+          <div><p>Thank you!</p>
+         
+          </div>
+          
+        )}  
+      
+      </main>
+  
+     
       <footer className={styles.footer}>
         <a
           href="https://blossomdao.space"
