@@ -62,18 +62,10 @@ const Home: NextPage = () => {
   });
 
 
-  function recordUserWallet(){
-    if(!checked){
-      setrecordedWallet(address as string)
-    }else{
-       setrecordedWallet((data as any).cold) 
-    }
-  
-  }
 
   const handleCreateUser = async () => {
     setConfirmed(true)
-    recordUserWallet();
+  
     console.log(checked)
 
     try {
@@ -82,7 +74,7 @@ const Home: NextPage = () => {
         body: JSON.stringify({
           _id:(decoded as any).id,
           guild_id:(decoded as any).guildId,
-          address:recordedWallet as string,
+          address:checked?address as string : (data as any).cold,
           network:"Mumbai",
           wins:0,
           losses:0,
