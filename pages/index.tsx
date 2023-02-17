@@ -59,7 +59,7 @@ const Home: NextPage = () => {
         body: JSON.stringify({
           _id:(decoded as any).id,
           guild_id:(decoded as any).guildId,
-          address:address,
+          address:address as string,
           network:"Mumbai",
           wins:0,
           losses:0,
