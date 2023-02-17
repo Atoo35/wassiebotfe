@@ -63,7 +63,7 @@ const Home: NextPage = () => {
 
 
   function recordUserWallet(){
-    if(checked ==false){
+    if(!checked){
       setrecordedWallet(address as string)
     }else{
        setrecordedWallet((data as any).cold) 
